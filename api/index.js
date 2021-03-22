@@ -49,15 +49,15 @@ app.post("/books", (req, res) => {
 	});
 
 	Book.sync();
-	res.send(data)
+	res.send(data);
 });
 
 /**
  * Updating books by id
  */
 app.put("/books/:id", async (req, res) => {
-	let data = req.body
-	const id = req.params.id
+	let data = req.body;
+	const id = req.params.id;
 	
 	await Book.update(data, {where: {id:id}});
 	res.status = 200;
@@ -74,5 +74,47 @@ app.delete("/books/:id", async (req, res) => {
 		where: {id:id}
 	});
 	res.status(404);
-	res.end()
+	res.end();
 });	
+
+
+/**
+ * Getting books by Genre
+ */
+
+app.get("/books/searchByGenre/:genre", async (req, res) => {
+	let genre = req.params.genre;
+	let books = await Book.findAll(
+		{where: {
+			genre: genre
+		}}
+	);
+	
+	if (books.length > 0){
+		res.send(books);
+	}
+	else{
+		res.status(404);
+		res.send({"message": "Genre not found..."});
+	}
+});
+
+/**
+ * Retrieve all books form determined author
+ */
+app.get("/books/searchByAuthor/:authorName", async (req, res) => {
+	let authorName = req.params.authorName;
+	let books = await Book.findAll(
+		{where: {
+			author: authorName	
+		}}
+		);
+		
+	if (books.length > 0){
+		res.send(books);
+	}
+	else{
+		res.status(404);
+		res.send({"message": "Author not found..."});
+	}
+});
