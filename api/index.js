@@ -10,8 +10,7 @@
 const express = require('express');
 const app = express();
 
-let models = require("../models/index");
-let Book = models.getModel();
+const Book = require('../models/books')
 
 app.use(express.json());
 app.listen(5000);
