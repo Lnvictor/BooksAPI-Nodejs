@@ -1,5 +1,5 @@
 'use strict';
-
+const Sequelize = require('sequelize');
 const { sequelize } = require('./books');
 
 const User = sequelize.define('User', {
