@@ -8,12 +8,12 @@
  */
 
 const express = require('express');
-const BookRouter = require('../routes/BookRouter');
+const bookRouter = require('../routes/bookRouter');
+const authRouter = require('../routes/authRouter');
 
 const app = express();
 
-const { Book } = require('../models/books')
-
 app.use(express.json());
-app.use('/api/', BookRouter)
+app.use('/api', bookRouter)
+app.use('/auth', authRouter)
 app.listen(5000);
