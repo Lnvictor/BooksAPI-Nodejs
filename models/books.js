@@ -20,7 +20,7 @@ const sequelize = new Sequelize(database, user, password, {
 );
 
 const Book = sequelize.define(
-    'book', {
+    'Book', {
         name:{
             type: Sequelize.STRING,
             allowNull: false
@@ -60,6 +60,4 @@ const Book = sequelize.define(
     }   
 );
 
-Book.sync();
-
-module.exports = Book;
+module.exports = {Book, sequelize};
