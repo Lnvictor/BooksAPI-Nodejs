@@ -1,12 +1,22 @@
-const User = require('../models/user')
+const { User } = require('../models')
 
 const { promisify } = require("util");
 const jwt = require('jsonwebtoken');
 
-const createToken = (id) => {
+exports.createToken = (id) => {
 	return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: Number(process.env.JWT_EXPIRES_IN)});
 };
 
+exports.verifyToken = (req) => {
+    let token;
+    if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
+    ) {
+        token = req.headers.authorization.split(" ")[1];
+    }
+    return token ? true: false;
+}
 
 exports.signUp = async (req, res) => {
     const data = req.body;
@@ -53,15 +63,7 @@ exports.login = async (req, res) => {
 
 exports.protect = async (req, res, next) => {
     try{
-
-        let token;
-        if (
-            req.headers.authorization &&
-            req.headers.authorization.startsWith("Bearer")
-        ) {
-            token = req.headers.authorization.split(" ")[1];
-        }
-        if (!token) {
+        if (!this.verifyToken(req)) {
             res.status(401)
                 .json({err: "You are not logged in! Please login in to continue"})
         }

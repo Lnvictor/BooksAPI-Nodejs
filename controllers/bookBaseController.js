@@ -1,4 +1,4 @@
-const { Book } = require('../models/books');
+const { Book } = require('../models');
 
 exports.createBook = async (req, res) => {
     let data = req.body;
@@ -80,5 +80,5 @@ exports.getByAuthorName = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-    res.send(await Book.findAll({attribute: ["name", "desc", "genre", "author", "pages", "price"]}));
+    res.status(200).json(await Book.findAll({attribute: ["name", "desc", "genre", "author", "pages", "price"]}));
 };
