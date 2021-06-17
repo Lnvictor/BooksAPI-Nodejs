@@ -1,6 +1,9 @@
-const { User } = require('../../models')
+const { User } = require('../../models');
 const authController = require('../../controllers/authController');
-const jwt = require('jsonwebtoken')
+const { promisify } = require("util");
+const jwt = require('jsonwebtoken');
+
+require("dotenv").config();
 
 describe('Testing jwt token validation', () => {
     it('Wrong token validation', async () => {
