@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes)  => {
             registredBy: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            cover_file_id: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         }   
     );

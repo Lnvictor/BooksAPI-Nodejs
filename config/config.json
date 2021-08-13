@@ -2,8 +2,7 @@
     "username": "usr",
     "password": "pwd",
     "database": "postgres",
-    "dialect": "sqlite",
-    "storage": "./tests/database.sqlite",
+    "dialect": "postgres",
     "operatorsAliases": false,
     "logging": false
 }

@@ -10,9 +10,12 @@
 const express = require('express');
 const bookRouter = require('../routes/bookRouter');
 const authRouter = require('../routes/authRouter');
+require('dotenv').config()
+
+const cors = require('cors');
 
 const app = express();
-
+app.use(cors())
 app.use(express.json());
 app.use('/api', bookRouter)
 app.use('/auth', authRouter)

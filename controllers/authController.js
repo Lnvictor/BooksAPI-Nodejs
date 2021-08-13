@@ -3,7 +3,7 @@ const { User } = require('../models')
 const { promisify } = require("util");
 const jwt = require('jsonwebtoken');
 
-exports.createToken = (id) => {
+const createToken = async (id) => {
 	return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: Number(process.env.JWT_EXPIRES_IN)});
 };
 
@@ -43,7 +43,10 @@ exports.signUp = async (req, res) => {
 
 exports.login = async (req, res) => {
     const username = req.body.username;
-    const password = req.body.password;
+    const password = req.body.password 
+    console.log(req.body)
+    console.log(req.headers)
+    console.log(req.method)
 
     if (!username || !password){
         throw Error('missing credentials')
@@ -57,7 +60,7 @@ exports.login = async (req, res) => {
     }
 
     res.send(
-        {"token": createToken(user.id), "username": user.username}
+        {"token": await createToken(user.id), "username": user.username}
     )
 };
 
@@ -67,7 +70,8 @@ exports.protect = async (req, res, next) => {
             res.status(401)
                 .json({err: "You are not logged in! Please login in to continue"})
         }
-    
+        
+        const token = req.headers.authorization.split(" ")[1]
         const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     
         const user = await User.findOne({where: {id: decode.id}});

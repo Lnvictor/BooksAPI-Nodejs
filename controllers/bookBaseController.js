@@ -10,12 +10,13 @@ exports.createBook = async (req, res) => {
 		author: data.author,
 		pages: data.pages,
 		price: data.price,
-		publishedDate: data.publishedDate,
+		publishedDate: new Date(data.publishedDate),
 		publishingCompany: data.publishingCompany,
-		registrationDate: data.registrationDate,
+		registrationDate: new Date(date.registrationDate),
 		registredBy: data.registredBy
 	});
-
+    
+    res.status(201)
 	res.send(data);
 };
 
@@ -82,3 +83,16 @@ exports.getByAuthorName = async (req, res) => {
 exports.getAll = async (req, res) => {
     res.status(200).json(await Book.findAll({attribute: ["name", "desc", "genre", "author", "pages", "price"]}));
 };
+
+exports.uploadImage = async (req, res, next) => {
+	const id = req.params.id;
+	await Book.update({cover_file_id: req.file.filename}, {where: {id: id}});
+	res.json({message: "cover saved"});
+}
+
+exports.getBookCover = async (req, res) => {
+	const id = req.params.id;
+    const book = await Book.findOne({where: {id: id}})
+    res.header({'Content-Type': "image/jpeg"})
+    res.sendFile(`./uploads/${book.cover_file_id}`, {root: './'})
+}
